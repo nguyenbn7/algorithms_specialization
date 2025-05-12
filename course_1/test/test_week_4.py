@@ -8,15 +8,22 @@ sys_path.append(os_path.join(current, ".."))
 from src.week_4 import min_cut
 
 
-def test_sample_1():
-    answer = 2
+def get_graph(filename: str):
     graph = {}
 
-    with open(os_path.join(current, "../input/week_4/sample_1.txt"), "r") as f:
+    with open(os_path.join(current, f"../input/week_4/{filename}"), "r") as f:
         lines = f.readlines()
         for line in lines:
             temp = list(map(int, line.split()))
             graph[temp[0]] = temp[1:]
+
+    return graph
+
+
+def test_sample_1():
+    answer = 2
+
+    graph = get_graph("sample_1.txt")
 
     attempt = min_cut(graph)
 
@@ -25,13 +32,8 @@ def test_sample_1():
 
 def test_sample_2():
     answer = 2
-    graph = {}
 
-    with open(os_path.join(current, "../input/week_4/sample_2.txt"), "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = list(map(int, line.split()))
-            graph[temp[0]] = temp[1:]
+    graph = get_graph("sample_2.txt")
 
     attempt = min_cut(graph)
 
@@ -40,13 +42,8 @@ def test_sample_2():
 
 def test_question():
     answer = 17
-    graph = {}
 
-    with open(os_path.join(current, "../input/week_4/question.txt"), "r") as f:
-        lines = f.readlines()
-        for line in lines:
-            temp = list(map(int, line.split()))
-            graph[temp[0]] = temp[1:]
+    graph = get_graph("question.txt")
 
     attempt = min_cut(graph)
 
