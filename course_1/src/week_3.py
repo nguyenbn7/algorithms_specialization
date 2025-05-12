@@ -64,32 +64,42 @@ def __pivot_partition(
 
 
 if __name__ == "__main__":
-    from os import path
+    from pathlib import Path
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "txt_file", help="Text file contains numbers seperated by new line", type=str
+    )
+
+    args = parser.parse_args()
+
+    filepath: str = args.txt_file
+
+    input_file = (Path.cwd() / filepath).resolve()
 
     with open(
-        path.join(
-            path.dirname(path.realpath(__file__)), f"../input/week_3/question.txt"
-        ),
+        input_file,
         "r",
     ) as f:
         numbers = list(map(int, f.readlines()))
 
     print(
-        "Last element",
+        "Using last element:",
         count_comparisions_quick_sort(
             numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.last_element
         ),
     )
 
     print(
-        "First element",
+        "Using first element:",
         count_comparisions_quick_sort(
             numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.first_element
         ),
     )
 
     print(
-        "Median of three",
+        "Using Median of three:",
         count_comparisions_quick_sort(
             numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.median_of_three
         ),

@@ -23,14 +23,24 @@ def karatsuba(num1: int, num2: int) -> int:
 
 
 if __name__ == "__main__":
-    from os import path
+    from pathlib import Path
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "txt_file", help="Text file contains 2 numbers seperated by new line", type=str
+    )
+
+    args = parser.parse_args()
+
+    filepath: str = args.txt_file
+
+    input_file = (Path.cwd() / filepath).resolve()
 
     with open(
-        path.join(
-            path.dirname(path.realpath(__file__)), "../input/week_1/question.txt"
-        ),
+        input_file,
         "r",
     ) as f:
-        num1, num2 = map(int, f.readline().split())
+        num1, num2 = map(int, f.readlines())
 
     print(karatsuba(num1, num2))

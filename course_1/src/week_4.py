@@ -2,6 +2,8 @@ from typing import Dict, List
 from random import choice
 from copy import deepcopy
 
+# TODO: some tests fail need to check again
+
 
 def min_cut(graph: Dict[int, List[int]], iteration: int = 200):
     """
@@ -49,14 +51,26 @@ def __contract(graph: Dict[int, List[int]], base_vertex: int, merge_vertex: int)
 
 
 if __name__ == "__main__":
-    from os import path
+    from pathlib import Path
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "txt_file",
+        help="Text file contains numbers seperated by new line and space",
+        type=str,
+    )
+
+    args = parser.parse_args()
+
+    filepath: str = args.txt_file
+
+    input_file = (Path.cwd() / filepath).resolve()
 
     graph = {}
 
     with open(
-        path.join(
-            path.dirname(path.realpath(__file__)), "../input/week_4/question.txt"
-        ),
+        input_file,
         "r",
     ) as f:
         lines = f.readlines()
