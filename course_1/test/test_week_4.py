@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import test as _
 
-from src.week_4 import min_cut
+from src.week_4 import min_cut, Edge, Graph
 
 
 current_path = Path(__file__).parent.resolve()
@@ -16,7 +16,7 @@ output_test_filenames = [f.name for f in output_test_path.glob("*.txt")]
 
 
 def get_graph(filename: str):
-    graph = {}
+    graph = Graph(0, 0)
 
     with open(
         input_test_path / filename,
@@ -25,7 +25,12 @@ def get_graph(filename: str):
         lines = f.readlines()
         for line in lines:
             temp = list(map(int, line.split()))
-            graph[temp[0]] = temp[1:]
+
+            graph.no_vertex += 1
+            graph.no_edge += len(temp[1:])
+
+            for dest in temp[1:]:
+                graph.edges.append(Edge(temp[0], dest))
 
     return graph
 

@@ -1,53 +1,104 @@
-from typing import Dict, List
+# https://www.geeksforgeeks.org/introduction-and-implementation-of-kargers-algorithm-for-minimum-cut/
+from typing import List
 from random import choice
-from copy import deepcopy
-
-# TODO: some tests fail need to check again
 
 
-def min_cut(graph: Dict[int, List[int]], iteration: int = 200):
+class Edge:
+    def __init__(self, src: int, dest: int):
+        self.src = src
+        self.dest = dest
+
+
+class Graph:
+    def __init__(self, no_vertex: int, no_edge: int):
+        self.no_vertex = no_vertex
+        self.no_edge = no_edge
+
+        self.edges: List[Edge] = []
+
+
+# A class to represent a subset for union-find
+class Subset:
+    def __init__(self, parent: int, rank: int):
+        self.parent = parent
+        self.rank = rank
+
+
+# A function that does union of two sets of x and y
+# (uses union by rank)
+def Union(subsets: List[Subset], x: int, y: int):
+    x_root = find(subsets, x)
+    y_root = find(subsets, y)
+
+    # Attach smaller rank tree under root of high
+    # rank tree (Union by Rank)
+    if subsets[x_root].rank < subsets[y_root].rank:
+        subsets[x_root].parent = y_root
+    elif subsets[x_root].rank > subsets[y_root].rank:
+        subsets[y_root].parent = x_root
+
+    # If ranks are same, then make one as root and
+    # increment its rank by one
+    else:
+        subsets[y_root].parent = x_root
+        subsets[x_root].rank += 1
+
+
+def find(subsets: List[Subset], i: int):
+    # find root and make root as parent of i
+    # (path compression)
+    if subsets[i].parent != i:
+        subsets[i].parent = find(subsets, subsets[i].parent)
+
+    return subsets[i].parent
+
+
+def karger_min_cut(graph: Graph) -> int:
+    V = graph.no_vertex
+    E = graph.no_edge
+    edges = graph.edges
+
+    subsets = []
+
+    for v in range(V + 1):
+        subsets.append(Subset(v, 0))
+
+    # Initially there are V vertices in
+    # contracted graph
+    vertices = V
+
+    while vertices > 2:
+        edge = choice(edges)
+        # print(edge)
+
+        subset1 = find(subsets, edge.src)
+        subset2 = find(subsets, edge.dest)
+
+        if subset1 == subset2:
+            continue
+
+        vertices -= 1
+        Union(subsets, subset1, subset2)
+
+    # Now we have two vertices (or subsets) left in
+    # the contracted graph, so count the edges between
+    # two components and return the count.
+    cutedges = 0
+
+    for i in range(E):
+        subset1 = find(subsets, edges[i].src)
+        subset2 = find(subsets, edges[i].dest)
+        if subset1 != subset2:
+            cutedges += 1
+
+    return cutedges // 2
+
+
+def min_cut(graph: Graph, iteration: int = 200):
     """
     Calculate Karger min cut for given graph
     """
     return min(karger_min_cut(graph) for _ in range(iteration))
-
-
-# https://www.geeksforgeeks.org/kargers-algorithm-for-minimum-cut-set-1-introduction-and-implementation/
-def karger_min_cut(graph: Dict[int, List[int]]) -> int:
-    graph_copy = deepcopy(graph)
-    while len(graph_copy) > 2:
-        base_vertex = choice(list(graph_copy.keys()))
-        merge_vertex = choice(graph_copy[base_vertex])
-
-        if base_vertex == merge_vertex:
-            continue
-
-        __contract(graph_copy, base_vertex, merge_vertex)
-    # They are symmetric so use both case is ok
-    return len(graph_copy[next(iter(graph_copy))])
-
-
-def __contract(graph: Dict[int, List[int]], base_vertex: int, merge_vertex: int):
-    # contract between base and vertex wanted to merge
-    graph[base_vertex].extend(
-        list(filter(lambda vertex: vertex != base_vertex, graph[merge_vertex]))
-    )
-    # Remove self loop
-    graph[base_vertex] = list(
-        filter(lambda vertex: vertex != merge_vertex, graph[base_vertex])
-    )
-
-    for vertex, vertices in graph.items():
-        if vertex == base_vertex or vertex == merge_vertex:
-            continue
-
-        while True:
-            if merge_vertex not in vertices:
-                break
-            vertices[vertices.index(merge_vertex)] = base_vertex
-
-    # remove vertex after merge
-    del graph[merge_vertex]
 
 
 if __name__ == "__main__":
@@ -67,7 +118,7 @@ if __name__ == "__main__":
 
     input_file = (Path.cwd() / filepath).resolve()
 
-    graph = {}
+    graph = Graph(0, 0)
 
     with open(
         input_file,
@@ -76,6 +127,11 @@ if __name__ == "__main__":
         lines = f.readlines()
         for line in lines:
             temp = list(map(int, line.split()))
-            graph[temp[0]] = temp[1:]
+
+            graph.no_vertex += 1
+            graph.no_edge += len(temp[1:])
+
+            for dest in temp[1:]:
+                graph.edges.append(Edge(temp[0], dest))
 
     print(min_cut(graph))
