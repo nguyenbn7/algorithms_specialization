@@ -54,3 +54,17 @@ def __merge_and_count_split_inversion(
         arr[i] = temp[i]
 
     return c
+
+
+if __name__ == "__main__":
+    from os import path
+
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), "../input/week_2/question.txt"
+        ),
+        "r",
+    ) as f:
+        numbers = list(map(int, f.readlines()))
+
+    print(count_inversion(numbers, [None] * len(numbers), 0, len(numbers) - 1))

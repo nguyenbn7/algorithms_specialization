@@ -23,7 +23,7 @@ def get_graph(filename: str):
 def test_sample_1():
     answer = 2
 
-    graph = get_graph("sample_1.txt")
+    graph = get_graph("test_1.txt")
 
     attempt = min_cut(graph)
 
@@ -33,7 +33,7 @@ def test_sample_1():
 def test_sample_2():
     answer = 2
 
-    graph = get_graph("sample_2.txt")
+    graph = get_graph("test_2.txt")
 
     attempt = min_cut(graph)
 

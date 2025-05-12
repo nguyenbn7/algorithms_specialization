@@ -46,3 +46,22 @@ def __contract(graph: Dict[int, List[int]], base_vertex: int, merge_vertex: int)
 
     # remove vertex after merge
     del graph[merge_vertex]
+
+
+if __name__ == "__main__":
+    from os import path
+
+    graph = {}
+
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), "../input/week_4/question.txt"
+        ),
+        "r",
+    ) as f:
+        lines = f.readlines()
+        for line in lines:
+            temp = list(map(int, line.split()))
+            graph[temp[0]] = temp[1:]
+
+    print(min_cut(graph))

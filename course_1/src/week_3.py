@@ -61,3 +61,36 @@ def __pivot_partition(
 
     arr[left], arr[j - 1] = arr[j - 1], arr[left]
     return j - 1
+
+
+if __name__ == "__main__":
+    from os import path
+
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), f"../input/week_3/question.txt"
+        ),
+        "r",
+    ) as f:
+        numbers = list(map(int, f.readlines()))
+
+    print(
+        "Last element",
+        count_comparisions_quick_sort(
+            numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.last_element
+        ),
+    )
+
+    print(
+        "First element",
+        count_comparisions_quick_sort(
+            numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.first_element
+        ),
+    )
+
+    print(
+        "Median of three",
+        count_comparisions_quick_sort(
+            numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.median_of_three
+        ),
+    )

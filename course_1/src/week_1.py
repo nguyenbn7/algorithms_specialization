@@ -20,3 +20,17 @@ def karatsuba(num1: int, num2: int) -> int:
     z2 = karatsuba(high1, high2)
 
     return z2 * 10 ** (m2 * 2) + ((z1 - z2 - z0) * 10**m2) + z0
+
+
+if __name__ == "__main__":
+    from os import path
+
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), "../input/week_1/question.txt"
+        ),
+        "r",
+    ) as f:
+        num1, num2 = map(int, f.readline().split())
+
+    print(karatsuba(num1, num2))
