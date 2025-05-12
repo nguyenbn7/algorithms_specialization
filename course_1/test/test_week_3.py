@@ -1,49 +1,59 @@
-from sys import path as sys_path
-from os import path as os_path
+from pathlib import Path
 
-# Resolve for parent module
-current = os_path.dirname(os_path.realpath(__file__))
-sys_path.append(os_path.join(current, ".."))
+import pytest
+import test as _
 
 from src.week_3 import count_comparisions_quick_sort, PivotPartitionStyles
 
 
+current_path = Path(__file__).parent.resolve()
+
+input_test_path = current_path / "input/week_3"
+input_test_filenames = [f.name for f in input_test_path.glob("*.txt")]
+
+output_test_path = current_path / "output/week_3"
+output_test_filenames = [f.name for f in output_test_path.glob("*.txt")]
+
+
 def get_numbers(filename: str):
-    with open(os_path.join(current, f"../input/week_3/{filename}"), "r") as f:
+    with open(
+        input_test_path / filename,
+        "r",
+    ) as f:
         numbers = list(map(int, f.readlines()))
 
     return numbers
 
 
-def test_question_median_of_three():
-    answer = 138382
-
-    numbers = get_numbers("question.txt")
-
-    attempt = count_comparisions_quick_sort(numbers, 0, len(numbers) - 1)
-
-    assert attempt == answer
+def get_expected_test_result(filename):
+    with open(
+        output_test_path / filename,
+        "r",
+    ) as f:
+        return list(map(int, f.readlines()))
 
 
-def test_question_first_element():
-    answer = 162085
+@pytest.mark.parametrize(
+    "input_filename,output_filename",
+    [*zip(input_test_filenames, output_test_filenames)],
+)
+def test_total_number_of_comparisons_used_to_sort_by_quick_sort_using(
+    input_filename, output_filename
+):
+    expected = get_expected_test_result(output_filename)
 
-    numbers = get_numbers("question.txt")
+    numbers = get_numbers(input_filename)
 
-    attempt = count_comparisions_quick_sort(
-        numbers, 0, len(numbers) - 1, PivotPartitionStyles.first_element
+    first_ele = count_comparisions_quick_sort(
+        numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.first_element
     )
 
-    assert attempt == answer
-
-
-def test_question_last_element():
-    answer = 164123
-
-    numbers = get_numbers("question.txt")
-
-    attempt = count_comparisions_quick_sort(
-        numbers, 0, len(numbers) - 1, PivotPartitionStyles.last_element
+    last_ele = count_comparisions_quick_sort(
+        numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.last_element
     )
 
-    assert attempt == answer
+    median_of_three = count_comparisions_quick_sort(
+        numbers.copy(), 0, len(numbers) - 1, PivotPartitionStyles.median_of_three
+    )
+
+    assert [first_ele, last_ele, median_of_three] == expected

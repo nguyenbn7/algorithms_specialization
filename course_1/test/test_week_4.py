@@ -1,17 +1,27 @@
-from sys import path as sys_path
-from os import path as os_path
+from pathlib import Path
 
-# Resolve for parent module
-current = os_path.dirname(os_path.realpath(__file__))
-sys_path.append(os_path.join(current, ".."))
+import pytest
+import test as _
 
 from src.week_4 import min_cut
+
+
+current_path = Path(__file__).parent.resolve()
+
+input_test_path = current_path / "input/week_4"
+input_test_filenames = [f.name for f in input_test_path.glob("*.txt")]
+
+output_test_path = current_path / "output/week_4"
+output_test_filenames = [f.name for f in output_test_path.glob("*.txt")]
 
 
 def get_graph(filename: str):
     graph = {}
 
-    with open(os_path.join(current, f"../input/week_4/{filename}"), "r") as f:
+    with open(
+        input_test_path / filename,
+        "r",
+    ) as f:
         lines = f.readlines()
         for line in lines:
             temp = list(map(int, line.split()))
@@ -20,31 +30,23 @@ def get_graph(filename: str):
     return graph
 
 
-def test_sample_1():
-    answer = 2
-
-    graph = get_graph("test_1.txt")
-
-    attempt = min_cut(graph)
-
-    assert attempt == answer
+def get_expected_test_result(filename):
+    with open(
+        output_test_path / filename,
+        "r",
+    ) as f:
+        return int(f.readline())
 
 
-def test_sample_2():
-    answer = 2
+@pytest.mark.parametrize(
+    "input_filename,output_filename",
+    [*zip(input_test_filenames, output_test_filenames)],
+)
+def test_karger_min_cut(input_filename, output_filename):
+    expected = get_expected_test_result(output_filename)
 
-    graph = get_graph("test_2.txt")
+    graph = get_graph(input_filename)
 
-    attempt = min_cut(graph)
+    actual = min_cut(graph)
 
-    assert attempt == answer
-
-
-def test_question():
-    answer = 17
-
-    graph = get_graph("question.txt")
-
-    attempt = min_cut(graph)
-
-    assert attempt == answer
+    assert actual == expected
