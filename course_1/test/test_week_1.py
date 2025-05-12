@@ -1,19 +1,47 @@
-from sys import path as sys_path
-from os import path as os_path
+from pathlib import Path
 
-# Resolve for parent module
-current = os_path.dirname(os_path.realpath(__file__))
-sys_path.append(os_path.join(current, ".."))
+import pytest
+import test as _
 
 from src.week_1 import karatsuba
 
 
-def test_question():
-    answer = 8539734222673567065463550869546574495034888535765114961879601127067743044893204848617875072216249073013374895871952806582723184
+current_path = Path(__file__).parent.resolve()
 
-    with open(os_path.join(current, "../input/week_1/question.txt"), "r") as f:
-        num1, num2 = map(int, f.readline().split())
+input_test_path = current_path / "input/week_1"
+input_test_filenames = [f.name for f in input_test_path.glob("*.txt")]
 
-    attempt = karatsuba(num1, num2)
+output_test_path = current_path / "output/week_1"
+output_test_filenames = [f.name for f in output_test_path.glob("*.txt")]
 
-    assert attempt == answer
+
+def get_numbers(filename: str):
+    with open(
+        input_test_path / filename,
+        "r",
+    ) as f:
+        num1, num2 = map(int, f.readlines())
+
+    return (num1, num2)
+
+
+def get_expected_test_result(filename):
+    with open(
+        output_test_path / filename,
+        "r",
+    ) as f:
+        return int(f.readline())
+
+
+@pytest.mark.parametrize(
+    "input_filename,output_filename",
+    [*zip(input_test_filenames, output_test_filenames)],
+)
+def test_karatsuba_multiplication(input_filename, output_filename):
+    expected = get_expected_test_result(output_filename)
+
+    (num1, num2) = get_numbers(input_filename)
+
+    actual = karatsuba(num1, num2)
+
+    assert actual == expected
