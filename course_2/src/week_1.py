@@ -2,15 +2,8 @@ from typing import List
 from collections import deque
 
 
-def load_data(filename: str):
-    with open(filename) as file:
-        return file.readlines()
-
-
 def find_scc(graph: List[List[int]], rev_graph: List[List[int]], len_graph: int):
     magic_order = DFS_loop(graph, len_graph)
-
-    print("Done 1st pass")
 
     # replace node of by order of graph
     rev_labeled_graph = [[] for _ in range(len_graph)]
@@ -19,7 +12,6 @@ def find_scc(graph: List[List[int]], rev_graph: List[List[int]], len_graph: int)
         for edge in rev_graph[node]:
             rev_labeled_graph[k].append(magic_order[edge])
 
-    print("Done label reverse")
     # Fix double count
     return DFS_loop_rev_labeled(rev_labeled_graph, len_graph)
 
@@ -77,17 +69,26 @@ def DFS_loop(graph: List[List[int]], len_graph: int):
 
 
 if __name__ == "__main__":
-    filename = "./final.txt"
-    data = load_data(filename)
-    data = [tuple(map(lambda x: int(x), l.split())) for l in data]
-    len_graph = max(max(data)) + 1
+    from os import path
 
-    graph = [[] for _ in range(len_graph)]
-    rev_graph = [[] for _ in range(len_graph)]
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), "../input/week_1/question.txt"
+        ),
+        "r",
+    ) as f:
+        lines = f.readlines()
 
-    for v, e in data:
-        graph[v].append(e)
-        rev_graph[e].append(v)
+        data = [tuple(map(lambda x: int(x), l.split())) for l in lines]
+
+        len_graph = max(max(data)) + 1
+
+        graph = [[] for _ in range(len_graph)]
+        rev_graph = [[] for _ in range(len_graph)]
+
+        for v, e in data:
+            graph[v].append(e)
+            rev_graph[e].append(v)
 
     scc = find_scc(graph, rev_graph, len_graph)
     scc.sort(reverse=True)

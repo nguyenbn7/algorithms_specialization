@@ -12,19 +12,6 @@ class GraphNode:
         return f"vertex: {self.vertex}, weight: {self.weight}"
 
 
-def load_graph(filename: str):
-    graph = dict()
-    with open(filename) as file:
-        for line in file:
-            temp = line.split()
-            v, edges = int(temp[0]), temp[1:]
-            graph[v] = []
-            for e in edges:
-                ve, w = map(int, e.split(","))
-                graph[v].append(GraphNode(ve, w))
-    return graph
-
-
 def find_shortest_paths(graph: Dict[int, List[GraphNode]], source_vertex=1):
     Infinity = 1_000_000
     dist = [Infinity] * (len(graph) + 1)
@@ -49,8 +36,26 @@ def find_shortest_paths(graph: Dict[int, List[GraphNode]], source_vertex=1):
 
 
 if __name__ == "__main__":
-    graph = load_graph("./test1.txt")
+    from os import path
+
+    graph = dict()
+
+    with open(
+        path.join(
+            path.dirname(path.realpath(__file__)), "../input/week_2/question.txt"
+        ),
+        "r",
+    ) as f:
+        for line in f:
+            temp = line.split()
+            v, edges = int(temp[0]), temp[1:]
+            graph[v] = []
+            for e in edges:
+                ve, w = map(int, e.split(","))
+                graph[v].append(GraphNode(ve, w))
+
     shortest_paths = find_shortest_paths(graph)
+    
     print(
         ",".join(
             map(
