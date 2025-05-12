@@ -134,4 +134,4 @@ if __name__ == "__main__":
             for dest in temp[1:]:
                 graph.edges.append(Edge(temp[0], dest))
 
-    print(min_cut(graph))
+    print(min_cut(graph, 50))  # Run couple of time will give 2 results
