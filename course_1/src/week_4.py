@@ -4,6 +4,9 @@ from copy import deepcopy
 
 
 def min_cut(graph: Dict[int, List[int]], iteration: int = 200):
+    """
+    Calculate Karger min cut for given graph
+    """
     return min(karger_min_cut(graph) for _ in range(iteration))
 
 

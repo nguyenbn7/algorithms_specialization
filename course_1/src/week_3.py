@@ -14,13 +14,20 @@ def count_comparisions_quick_sort(
     right: int,
     partition_style: PivotPartitionStyles = PivotPartitionStyles.median_of_three,
 ) -> int:
+    """
+    Count how many comparisions during quick sort if using median of three for pivot partition
+    """
+
     if left >= right:
         return 0
 
     c = right - left
+
     pivot = __pivot_partition(arr, left, right, partition_style)
+
     c += count_comparisions_quick_sort(arr, left, pivot - 1, partition_style)
     c += count_comparisions_quick_sort(arr, pivot + 1, right, partition_style)
+
     return c
 
 
@@ -30,7 +37,7 @@ def __pivot_partition(
     right: int,
     partition_style: PivotPartitionStyles = PivotPartitionStyles.median_of_three,
 ) -> int:
-    if partition_style ==  PivotPartitionStyles.median_of_three:
+    if partition_style == PivotPartitionStyles.median_of_three:
         mid = left + (right - left) // 2
         # https://stackoverflow.com/questions/1582356/fastest-way-of-finding-the-middle-value-of-a-triple/14676309#14676309
         if (arr[left] - arr[mid]) * (arr[right] - arr[left]) >= 0:
@@ -43,7 +50,7 @@ def __pivot_partition(
 
     elif partition_style == PivotPartitionStyles.last_element:
         arr[left], arr[right] = arr[right], arr[left]
-        
+
     pivot = arr[left]
     j = left + 1
 

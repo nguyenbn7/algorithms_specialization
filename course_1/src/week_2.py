@@ -2,13 +2,25 @@ from typing import List
 
 
 def count_inversion(arr: List[int], temp: List[int], left: int, right: int) -> int:
+    """
+    Count how many inversion in array.
+
+    Inversions: A pair (A[i], A[j]) is said to be in inversion If:
+       - A[i] > A[j]
+       - i < j
+    """
+
     if left >= right:
         return 0
+
     c = 0
+
     mid = left + (right - left) // 2
+
     c += count_inversion(arr, temp, left, mid)
     c += count_inversion(arr, temp, mid + 1, right)
     c += __merge_and_count_split_inversion(arr, temp, left, mid + 1, right)
+
     return c
 
 

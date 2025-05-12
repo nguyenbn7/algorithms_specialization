@@ -1,4 +1,8 @@
 def karatsuba(num1: int, num2: int) -> int:
+    """
+    Fast algorithm Karatsuba for multiply 2 big numbers
+    """
+
     if num1 < 10 or num2 < 10:
         return num1 * num2  # fall back to traditional multiplication
 
