@@ -8,7 +8,7 @@ Learn To Think Like A Computer Scientist. Master the fundamentals of the design 
 
 ## Description
 
-Solutions for each weekly assignment(s). WARNING! DO IT YOURSEFT BEFORE REFER THIS REPOSITORY DUE TO ACADEMIC HONEST.
+Solutions for each weekly assignment(s). WARNING! DO IT YOURSELF BEFORE REFERING THIS REPOSITORY DUE TO ACADEMIC HONEST.
 
 ## Getting Started
 
