@@ -63,4 +63,4 @@ if __name__ == "__main__":
 
     sum_medians = find_median_maintenance(numbers)
 
-    print(sum_medians % 10000)
+    print(sum_medians % 10_000)
