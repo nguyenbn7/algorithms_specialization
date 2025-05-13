@@ -4,6 +4,8 @@ Learn To Think Like A Computer Scientist. Master the fundamentals of the design 
 
 - [Divide and Conquer, Sorting and Searching, and Randomized Algorithms](https://www.coursera.org/learn/algorithms-divide-conquer?specialization=algorithms) (folder [course_1](https://github.com/nguyenbn7/algorithms_specialization/tree/main/course_1))
 - [Graph Search, Shortest Paths, and Data Structures](https://www.coursera.org/learn/algorithms-graphs-data-structures?specialization=algorithms) (folder [course_2](https://github.com/nguyenbn7/algorithms_specialization/tree/main/course_2))
+- [Greedy Algorithms, Minimum Spanning Trees, and Dynamic Programming](https://www.coursera.org/learn/algorithms-greedy?specialization=algorithms) (TBA)
+- [Shortest Paths Revisited, NP-Complete Problems and What To Do About Them](https://www.coursera.org/learn/algorithms-npcomplete?specialization=algorithms) (TBA)
 
 
 ## Description
