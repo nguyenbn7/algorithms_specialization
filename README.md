@@ -8,7 +8,7 @@ Learn To Think Like A Computer Scientist. Master the fundamentals of the design 
 
 ## Description
 
-Solutions for each weekly assignment(s). WARNING! DO IT YOURSELF BEFORE REFERING THIS REPOSITORY DUE TO ACADEMIC HONEST.
+Repository contains solutions and automation test for each weekly assignment(s) of each course of specialization.
 
 ## Getting Started
 
@@ -74,4 +74,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 ## Acknowledgments
 
 - [Algorithms Specialization](https://www.coursera.org/specializations/algorithms)
+- [Example Test Cases for Stanford's Algorithms Coursera Specialization](https://github.com/beaunus/stanford-algs)
 - [A simple README.md template](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)
